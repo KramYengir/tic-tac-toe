@@ -1,10 +1,13 @@
-const PLAYER1 = 'X';
-const PLAYER2 = 'O';
+
+
 
 const gameBoard = (()=>{
     let board = ['','','','','','','','','',];
 
+    // marks a space on the board with the player's sign (X or O)
     let markBoard = (player, index)=>{
+
+        // check if the space if free first
         if(checkMoveValid(index)){
             board[index] = player;
             return true;
@@ -16,7 +19,6 @@ const gameBoard = (()=>{
     }
 
     let printBoard = ()=>{
-        /* console.table(board); */
         console.table(board)
     }
 
@@ -24,6 +26,7 @@ const gameBoard = (()=>{
         board = ['','','','','','','','','',];
     }
 
+    // get an array of all the current spaces marked by the player 
     let getPlayerSpaces = (player)=>{
         let playerCells = [];
 
@@ -33,6 +36,7 @@ const gameBoard = (()=>{
             }
         })
 
+        // sort the array numerically, just to make comparison easier
         return playerCells.sort();
     }
 
@@ -48,8 +52,13 @@ const gameBoard = (()=>{
     }
 })();
 
+
+
 const game = (()=>{
 
+    let newGameboard = gameBoard;
+
+    // all the different winning patterns for comparison
     const winConditions = [
         [0, 1, 2],
         [3, 4, 5],
@@ -61,16 +70,15 @@ const game = (()=>{
         [2, 4, 6]
     ];
 
+    // always start with X
     let currentPlayer = 'X';
 
     let changePlayer = ()=>{
         currentPlayer === 'X' ? currentPlayer = 'O' : currentPlayer = 'X';
-        console.log('workes'); 
-
     } 
 
     let makeMove = (index) =>{
-        if(gameBoard.markBoard(currentPlayer, index)){
+        if(newGameboard.markBoard(currentPlayer, index)){
             checkWin();
             changePlayer();
         }
@@ -78,11 +86,13 @@ const game = (()=>{
     }
 
     let checkWin = ()=>{
-        let playerSpaces = gameBoard.getPlayerSpaces(currentPlayer);
-        console.log(playerSpaces);
+        // first we get all the spaces marked by the current player
+        let playerSpaces = newGameboard.getPlayerSpaces(currentPlayer);
 
-        winConditions.forEach((el)=>{
-            if(helpers.compareArrays(el, playerSpaces)){
+        // then go thru all the winning patterns and using
+        // a helper function we compare with the player's patterns
+        winConditions.forEach((winPattern)=>{
+            if(helpers.compareArrays(winPattern, playerSpaces)){
                 console.log(currentPlayer + ' WINSSSSS')
                 restart();
             }
@@ -90,7 +100,7 @@ const game = (()=>{
     }
 
     let restart = ()=>{
-        gameBoard.resetBoard();
+        newGameboard.resetBoard();
         currentPlayer = 'X';
     }
 
