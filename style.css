@@ -3,8 +3,9 @@
 }
 
 :root{
-    --board-size: 600px;
-    --cell-size: calc(var(--board-size)/3)
+    --board-size: 450px;
+    --cell-size: calc(var(--board-size)/3);
+    --cell-border: 1px solid black;
 }
 
 body{
@@ -26,5 +27,22 @@ body{
 }
  .cell{
     size: var(--cell-size);
-    border: 1px solid red;
+    border: var(--cell-border);
+ }
+
+
+ .board > div:nth-child(3n+0){
+    border-right: none;
+ }
+
+ .board > div:nth-child(3n+1){
+    border-left: none;
+ }
+
+ .board > div:nth-child(-n+3){
+    border-top: none;
+ }
+
+ .board > div:nth-child(n+7){
+    border-bottom: none;
  }
