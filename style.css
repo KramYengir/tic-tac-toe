@@ -34,20 +34,22 @@ body{
  .cell{
     size: var(--cell-size);
     border: var(--cell-border);
+    cursor: pointer;
  }
 
- .cell.x, .cell.o{
+ .cell.X, .cell.O{
     background-size: var(--img-size) var(--img-size);
     background-repeat: no-repeat;
     background-position: center;
+    cursor: not-allowed;
     /* filter: invert(90%);  */
  }
 
- .cell.x{
+ .cell.X{
     background-image: var(--x-image);
  }
 
- .cell.o{
+ .cell.O{
     background-image: var(--o-image);
  }
 
