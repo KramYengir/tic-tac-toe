@@ -108,7 +108,7 @@ const game = (()=>{
     }
 
     let manageEndgame = (msg)=>{
-        //UI.displayEndgame(msg)
+        uiManager.displayResult(msg);
     }
 
     let restart = ()=>{
@@ -155,6 +155,16 @@ const helpers = (()=>{
 const uiManager = (()=>{
     const board = document.getElementsByClassName('board');
     const cells = [...document.getElementsByClassName('cell')];
+    const resultDisplay = document.querySelector('.result-display');
+    const resultMessage = document.querySelector('.message');
+    const restartButton = document.querySelector('#restart-button');
+
+    restartButton.addEventListener('click', ()=>{
+        game.restart();
+        resultDisplay.classList.remove('active');
+        resetBoardDisplay();
+    })
+
 
     cells.forEach((cell, index) =>{
         cell.addEventListener('click', ()=>{
@@ -170,7 +180,20 @@ const uiManager = (()=>{
         game.makeMove(index);
     }
 
+    let displayResult = (msg)=>{
+        resultDisplay.classList.add('active');
+        resultMessage.textContent = msg;
+    }
+
+    let resetBoardDisplay = ()=>{
+        cells.forEach(cell =>{
+            cell.classList.remove('O');
+            cell.classList.remove('X');
+
+        })
+    }
+
     return {
-        handleClick,
+        displayResult,
     }
 })();
