@@ -57,6 +57,7 @@ const gameBoard = (()=>{
 const game = (()=>{
 
     let newGameboard = gameBoard;
+    let moveCount = 0;
 
     // all the different winning patterns for comparison
     const winConditions = [
@@ -83,13 +84,14 @@ const game = (()=>{
 
     let makeMove = (index) =>{
         if(newGameboard.markBoard(currentPlayer, index)){
-            checkWin();
+            moveCount++;
+            checkResult();
             changePlayer();
         }
 
     }
 
-    let checkWin = ()=>{
+    let checkResult = ()=>{
         // first we get all the spaces marked by the current player
         let playerSpaces = newGameboard.getPlayerSpaces(currentPlayer);
 
@@ -97,13 +99,20 @@ const game = (()=>{
         // a helper function we compare with the player's patterns
         winConditions.forEach((winPattern)=>{
             if(helpers.compareArrays(winPattern, playerSpaces)){
-                console.log(currentPlayer + ' WINSSSSS')
-                restart();
+                console.log('gameover')
+                manageEndgame(currentPlayer + ' Wins!');
             }
+            else if(moveCount>=9)
+                manageEndgame("It's a tie!")
         })
     }
 
+    let manageEndgame = (msg)=>{
+        //UI.displayEndgame(msg)
+    }
+
     let restart = ()=>{
+        moveCount = 0;
         newGameboard.resetBoard();
         currentPlayer = 'X';
     }
@@ -111,7 +120,8 @@ const game = (()=>{
     return {
         makeMove,
         restart,
-        getCurrentPlayer
+        getCurrentPlayer,
+        manageEndgame
     }
 })();
 
