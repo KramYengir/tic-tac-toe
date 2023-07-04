@@ -1,0 +1,30 @@
+*{
+    box-sizing: border-box;
+}
+
+:root{
+    --board-size: 600px;
+    --cell-size: calc(var(--board-size)/3)
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board{
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+
+    width: var(--board-size);
+    height: var(--board-size);
+    background-color: #1fe;
+}
+ .cell{
+    size: var(--cell-size);
+    border: 1px solid red;
+ }
