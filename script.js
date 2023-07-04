@@ -73,6 +73,10 @@ const game = (()=>{
     // always start with X
     let currentPlayer = 'X';
 
+    let getCurrentPlayer = ()=>{
+        return currentPlayer;
+    }
+
     let changePlayer = ()=>{
         currentPlayer === 'X' ? currentPlayer = 'O' : currentPlayer = 'X';
     } 
@@ -106,7 +110,8 @@ const game = (()=>{
 
     return {
         makeMove,
-        restart
+        restart,
+        getCurrentPlayer
     }
 })();
 
@@ -134,5 +139,28 @@ const helpers = (()=>{
 
     return{
         compareArrays,
+    }
+})();
+
+const uiManager = (()=>{
+    const board = document.getElementsByClassName('board');
+    const cells = [...document.getElementsByClassName('cell')];
+
+    cells.forEach((cell, index) =>{
+        cell.addEventListener('click', ()=>{
+            handleClick(cell, index);
+        })
+    })
+
+    let handleClick = (cell, index)=>{
+        if(cell.classList.contains('X') || cell.classList.contains('O'))
+            return;
+
+        cell.classList.add(game.getCurrentPlayer());
+        game.makeMove(index);
+    }
+
+    return {
+        handleClick,
     }
 })();
