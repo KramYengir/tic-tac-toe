@@ -5,7 +5,11 @@
 :root{
     --board-size: 450px;
     --cell-size: calc(var(--board-size)/3);
-    --cell-border: 1px solid black;
+    --cell-border: none;
+
+    --x-image: url(img/white-x.png);
+    --o-image: url(img/white-o.png);
+    --img-size: calc(var(--cell-size)*0.8);
 }
 
 body{
@@ -15,6 +19,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #232323;
 }
 
 .board{
@@ -24,10 +29,26 @@ body{
     width: var(--board-size);
     height: var(--board-size);
     background-color: #1fe;
+    background-image: url(img/chalk-board.png);
 }
  .cell{
     size: var(--cell-size);
     border: var(--cell-border);
+ }
+
+ .cell.x, .cell.o{
+    background-size: var(--img-size) var(--img-size);
+    background-repeat: no-repeat;
+    background-position: center;
+    /* filter: invert(90%);  */
+ }
+
+ .cell.x{
+    background-image: var(--x-image);
+ }
+
+ .cell.o{
+    background-image: var(--o-image);
  }
 
 
