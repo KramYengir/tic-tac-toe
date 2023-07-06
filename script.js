@@ -44,11 +44,16 @@ const gameBoard = (()=>{
         return board[index] == '';
     }
 
+    let getBoard = ()=>{
+        return board;
+    }
+
     return {
         printBoard,
         markBoard,
         getPlayerSpaces,
-        resetBoard
+        resetBoard,
+        getBoard
     }
 })();
 
@@ -85,7 +90,6 @@ const game = (()=>{
         currentPlayer = player1;
     }
 
-    // all the different winning patterns for comparison
     const winConditions = [
         [0, 1, 2],
         [3, 4, 5],
@@ -96,6 +100,32 @@ const game = (()=>{
         [0, 4, 8],
         [2, 4, 6]
     ];
+
+    let checkForWin = ()=>{
+        let result = false;
+
+        for (let i = 0; i <= 7; i++) {
+            
+            const winPattern = winConditions[i];
+            let a = gameBoard.getBoard()[winPattern[0]];
+            let b = gameBoard.getBoard()[winPattern[1]];
+            let c = gameBoard.getBoard()[winPattern[2]];
+
+            if (a === '' || b === '' || c === '') {
+                continue;
+            }
+
+            if (a === b && b === c) {
+                result = true;
+                break
+            }
+        }
+
+        return result;
+
+    }
+
+    // all the different winning patterns for comparison
 
 
     let getCurrentPlayer = ()=>{
@@ -109,27 +139,21 @@ const game = (()=>{
     let makeMove = (index) =>{
         if(newGameboard.markBoard(currentPlayer.sign, index)){
             moveCount++;
-            checkResult();
+            checkForResult();
             changePlayer();
         }
 
     }
 
-    let checkResult = ()=>{
-        // first we get all the spaces marked by the current player
-        let playerSpaces = newGameboard.getPlayerSpaces(currentPlayer.sign);
-
-        // then go thru all the winning patterns and using
-        // a helper function we compare with the player's patterns
-        winConditions.forEach((winPattern)=>{
-            if(helpers.compareArrays(winPattern, playerSpaces)){
-                console.log('gameover')
-                currentPlayer.increaseScore();
-                manageEndgame(currentPlayer.name + ' Wins!');
-            }
-            else if(moveCount>=9)
-                manageEndgame("It's a tie!")
-        })
+    let checkForResult = ()=>{
+        if(checkForWin()){
+            console.log('gameover')
+            currentPlayer.increaseScore();
+            manageEndgame(currentPlayer.name + ' Wins!');
+        }
+        else if(moveCount>=9)
+            manageEndgame("It's a tie!")
+        
     }
 
     let manageEndgame = (msg)=>{
@@ -155,7 +179,7 @@ const helpers = (()=>{
     
     const compareArrays = (a, b)=> {
         // check the length
-        if (a.length != b.length) {
+        if (b.length < 3) {
             return false;
         } else {
             let result = false;
@@ -167,6 +191,33 @@ const helpers = (()=>{
                     return false;
                 } else {
                     result = true;
+                }
+            }
+            //if we make more than 3 moves, 
+            //our player's array will 
+            //be too long to compare. So here we will compare
+            //with the last 3 & first 3 values
+            if(b.length == 4){
+                //compare the first 3...
+                for (let i = 0; i < a.length; i++) {
+    
+                    if (a[i] !== b[i+1]) {
+                        return false;
+                    } else {
+                        result = true;
+                    }
+                }
+                if(result) return;
+                else{
+                    //compare the last 3...
+                    for (let i = 0; i < a.length; i++) {
+        
+                        if (a[i] !== b[i+2]) {
+                            return false;
+                        } else {
+                            result = true;
+                        }
+                    }
                 }
             }
             return result;
