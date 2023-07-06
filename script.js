@@ -52,16 +52,22 @@ const gameBoard = (()=>{
     }
 })();
 
-const player = (name = 'Player 1')=>{
+const createPlayer = (name, sign)=>{
     let score = 0;
 
     let increaseScore = ()=>{
         score++;
     }
 
+    let getScore = ()=>{
+        return score;
+    }
+
     return {
         name,
-        increaseScore
+        sign,
+        increaseScore,
+        getScore
     }
 }
 
@@ -69,6 +75,15 @@ const game = (()=>{
 
     let newGameboard = gameBoard;
     let moveCount = 0;
+    let player1, player2;
+    let currentPlayer;
+
+    let initPlayers = (p1, p2)=>{
+        player1 = createPlayer(p1, 'X');
+        player2 = createPlayer(p2, 'O');
+
+        currentPlayer = player1;
+    }
 
     // all the different winning patterns for comparison
     const winConditions = [
@@ -82,19 +97,17 @@ const game = (()=>{
         [2, 4, 6]
     ];
 
-    // always start with X
-    let currentPlayer = 'X';
 
     let getCurrentPlayer = ()=>{
         return currentPlayer;
     }
 
     let changePlayer = ()=>{
-        currentPlayer === 'X' ? currentPlayer = 'O' : currentPlayer = 'X';
+        currentPlayer === player1 ? currentPlayer = player2 : currentPlayer = player1;
     } 
 
     let makeMove = (index) =>{
-        if(newGameboard.markBoard(currentPlayer, index)){
+        if(newGameboard.markBoard(currentPlayer.sign, index)){
             moveCount++;
             checkResult();
             changePlayer();
@@ -104,14 +117,15 @@ const game = (()=>{
 
     let checkResult = ()=>{
         // first we get all the spaces marked by the current player
-        let playerSpaces = newGameboard.getPlayerSpaces(currentPlayer);
+        let playerSpaces = newGameboard.getPlayerSpaces(currentPlayer.sign);
 
         // then go thru all the winning patterns and using
         // a helper function we compare with the player's patterns
         winConditions.forEach((winPattern)=>{
             if(helpers.compareArrays(winPattern, playerSpaces)){
                 console.log('gameover')
-                manageEndgame(currentPlayer + ' Wins!');
+                currentPlayer.increaseScore();
+                manageEndgame(currentPlayer.name + ' Wins!');
             }
             else if(moveCount>=9)
                 manageEndgame("It's a tie!")
@@ -125,10 +139,11 @@ const game = (()=>{
     let restart = ()=>{
         moveCount = 0;
         newGameboard.resetBoard();
-        currentPlayer = 'X';
+        currentPlayer = player1;
     }
 
     return {
+        initPlayers,
         makeMove,
         restart,
         getCurrentPlayer,
@@ -158,7 +173,7 @@ const helpers = (()=>{
         }
     }
 
-    const getPlayerNames = (input1, input2)=>{
+    const getNamesFromInput = (input1, input2)=>{
         let player1, player2;
         
         if(input1.value.trim() == ''){
@@ -180,7 +195,7 @@ const helpers = (()=>{
 
     return{
         compareArrays,
-        getPlayerNames
+        getNamesFromInput
     }
 })();
 
@@ -219,11 +234,19 @@ const uiManager = (()=>{
     })
     
     let setPlayerNames = ()=>{
-        let playerNames = helpers.getPlayerNames(player1Input, player2Input);
-        console.table(playerNames);
+        let playerNames = helpers.getNamesFromInput(player1Input, player2Input);
         
         player1 = playerNames.player1;
         player2 = playerNames.player2;
+
+        game.initPlayers(player1, player2);
+    }
+
+    let getPlayerNames = ()=>{
+        return {
+            player1,
+            player2
+        }
     }
 
     let toggleModal = ()=>{
@@ -240,7 +263,7 @@ const uiManager = (()=>{
         if(cell.classList.contains('X') || cell.classList.contains('O'))
             return;
 
-        cell.classList.add(game.getCurrentPlayer());
+        cell.classList.add(game.getCurrentPlayer().sign);
         game.makeMove(index);
     }
 
@@ -259,5 +282,6 @@ const uiManager = (()=>{
 
     return {
         displayResult,
+        getPlayerNames
     }
 })();
