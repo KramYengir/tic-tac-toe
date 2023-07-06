@@ -138,7 +138,7 @@ const game = (()=>{
 
 const helpers = (()=>{
     
-    let compareArrays = (a, b)=> {
+    const compareArrays = (a, b)=> {
         // check the length
         if (a.length != b.length) {
             return false;
@@ -158,30 +158,83 @@ const helpers = (()=>{
         }
     }
 
+    const getPlayerNames = (input1, input2)=>{
+        let player1, player2;
+        
+        if(input1.value.trim() == ''){
+            player1 = 'Player 1'
+        }
+        else player1 = input1.value;
+
+        if(input2.value.trim() == ''){
+            player2 = 'Player 2'
+        }
+        else player2 = input2.value;
+
+        return{
+            player1,
+            player2
+        }
+    }
+
+
     return{
         compareArrays,
+        getPlayerNames
     }
 })();
 
 const uiManager = (()=>{
-    const board = document.getElementsByClassName('board');
+
+    const modal = document.querySelector('.modal');
+    const player1Input = document.querySelector('#player1-input');
+    const player2Input = document.querySelector('#player2-input');
+    const readyButton = document.querySelector('#ready-button')
+
+
     const cells = [...document.getElementsByClassName('cell')];
     const resultDisplay = document.querySelector('.result-display');
     const resultMessage = document.querySelector('.message');
     const restartButton = document.querySelector('#restart-button');
 
+    let player1, player2;
+
+    readyButton.addEventListener('click', ()=>{
+        setPlayerNames();
+        toggleModal();
+
+    })
+    
     restartButton.addEventListener('click', ()=>{
         game.restart();
         resultDisplay.classList.remove('active');
         resetBoardDisplay();
     })
-
-
+    
+    
     cells.forEach((cell, index) =>{
         cell.addEventListener('click', ()=>{
             handleClick(cell, index);
         })
     })
+    
+    let setPlayerNames = ()=>{
+        let playerNames = helpers.getPlayerNames(player1Input, player2Input);
+        console.table(playerNames);
+        
+        player1 = playerNames.player1;
+        player2 = playerNames.player2;
+    }
+
+    let toggleModal = ()=>{
+        modal.classList.toggle('hide');
+    }
+
+    let resetPlayerInputs = ()=>{
+        player1Input.value = 'Player 1';
+        player2Input.value = 'Player 2';
+
+    }
 
     let handleClick = (cell, index)=>{
         if(cell.classList.contains('X') || cell.classList.contains('O'))
