@@ -52,7 +52,18 @@ const gameBoard = (()=>{
     }
 })();
 
+const player = (name = 'Player 1')=>{
+    let score = 0;
 
+    let increaseScore = ()=>{
+        score++;
+    }
+
+    return {
+        name,
+        increaseScore
+    }
+}
 
 const game = (()=>{
 
