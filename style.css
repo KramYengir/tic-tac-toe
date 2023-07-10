@@ -179,7 +179,7 @@ body{
     font-size: 3.5rem;
  }
 
- #next-button{
+ #next-button, #restart-button{
     width: 250px;
     height: 50px;
     border-radius: 10px;
@@ -190,7 +190,7 @@ body{
     font-family: inherit;
  }
 
- #next-button:hover{
+ #next-button:hover, #restart-button:hover{
     color: black;
     background-color: white;
     border: 2px solid black;

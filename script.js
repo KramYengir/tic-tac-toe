@@ -1,6 +1,4 @@
 
-
-
 const gameBoard = (()=>{
     let board = ['','','','','','','','','',];
 
@@ -261,10 +259,15 @@ const uiManager = (()=>{
     const cells = [...document.getElementsByClassName('cell')];
     const resultDisplay = document.querySelector('.result-display');
     const resultMessage = document.querySelector('.message');
+    const restartButton = document.querySelector('#restart-button');
     const nextButton = document.querySelector('#next-button');
 
     let player1, player2;
 
+    restartButton.addEventListener('click', ()=>{
+        location.reload();
+    })
+    
     readyButton.addEventListener('click', ()=>{
         setPlayerNames();
         toggleModal();
