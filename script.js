@@ -177,7 +177,7 @@ const game = (()=>{
 
 const helpers = (()=>{
     
-    const compareArrays = (a, b)=> {
+    /* const compareArrays = (a, b)=> {
         // check the length
         if (b.length < 3) {
             return false;
@@ -223,7 +223,7 @@ const helpers = (()=>{
             return result;
         }
     }
-
+ */
     const getNamesFromInput = (input1, input2)=>{
         let player1, player2;
         
@@ -245,7 +245,7 @@ const helpers = (()=>{
 
 
     return{
-        compareArrays,
+        /* compareArrays, */
         getNamesFromInput
     }
 })();
@@ -261,7 +261,7 @@ const uiManager = (()=>{
     const cells = [...document.getElementsByClassName('cell')];
     const resultDisplay = document.querySelector('.result-display');
     const resultMessage = document.querySelector('.message');
-    const restartButton = document.querySelector('#restart-button');
+    const nextButton = document.querySelector('#next-button');
 
     let player1, player2;
 
@@ -271,7 +271,7 @@ const uiManager = (()=>{
 
     })
     
-    restartButton.addEventListener('click', ()=>{
+    nextButton.addEventListener('click', ()=>{
         game.restart();
         resultDisplay.classList.remove('active');
         resetBoardDisplay();
