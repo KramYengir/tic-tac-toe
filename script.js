@@ -255,6 +255,13 @@ const uiManager = (()=>{
     const player2Input = document.querySelector('#player2-input');
     const readyButton = document.querySelector('#ready-button')
 
+    const p1ScoreName = document.querySelector('.p1-name');
+    const p2ScoreName = document.querySelector('.p2-name');
+    const p1Score = document.querySelector('.p1-score');
+    const p2Score = document.querySelector('.p2-score');
+
+
+
 
     const cells = [...document.getElementsByClassName('cell')];
     const resultDisplay = document.querySelector('.result-display');
@@ -293,6 +300,10 @@ const uiManager = (()=>{
         player1 = playerNames.player1;
         player2 = playerNames.player2;
 
+        p1ScoreName.textContent = playerNames.player1;
+        p2ScoreName.textContent = playerNames.player2;
+
+
         game.initPlayers(player1, player2);
     }
 
@@ -307,11 +318,11 @@ const uiManager = (()=>{
         modal.classList.toggle('hide');
     }
 
-    let resetPlayerInputs = ()=>{
+/*     let resetPlayerInputs = ()=>{
         player1Input.value = 'Player 1';
         player2Input.value = 'Player 2';
 
-    }
+    } */
 
     let handleClick = (cell, index)=>{
         if(cell.classList.contains('X') || cell.classList.contains('O'))

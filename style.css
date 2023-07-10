@@ -100,13 +100,23 @@ body{
    scale: 1.1;
    transition: 0.2s;
 
+ }
 
+ .main{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 10rem;
+   margin-top: auto;
+   padding-right: 1rem;
+   padding-left: 1rem;
  }
 
 .board{
+   flex: 3;
+
     display: grid;
     grid-template-columns: repeat(3, auto);
-    margin-top: auto;
 
     width: var(--board-size);
     height: var(--board-size);
@@ -150,6 +160,43 @@ body{
 
  .board > div:nth-child(n+7){
     border-bottom: none;
+ }
+
+ .score-display{
+   display: grid;
+   grid-template: 0.5fr 5fr / 1fr 1fr;
+   grid-template-areas: 
+      'p1-name p2-name'
+      'p1-score p2-score';
+   justify-content: center;
+   align-items: center;
+}
+
+.score-display.hide{
+   display: none;
+}
+
+.score-display > *{
+   padding: 1rem;
+
+}
+
+ .p1-name, .p2-name{
+   color: white;
+   font-size: 1.5rem;
+   border-bottom: 5px solid white;
+ }
+
+ .p1-score, .p2-score{
+   font-size: 1.5rem;
+   color: white;
+   align-self: baseline;
+   justify-self: center;
+   padding-bottom: 5rem;
+}
+
+ .p1-name{
+   border-right: 5px solid white;
  }
 
  .result-display{
