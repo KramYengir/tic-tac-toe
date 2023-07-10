@@ -130,6 +130,14 @@ const game = (()=>{
         return currentPlayer;
     }
 
+    let getP1Score = ()=>{
+        return player1.getScore();
+    }
+
+    let getP2Score = ()=>{
+        return player2.getScore();
+    }
+
     let changePlayer = ()=>{
         currentPlayer === player1 ? currentPlayer = player2 : currentPlayer = player1;
     } 
@@ -169,7 +177,9 @@ const game = (()=>{
         makeMove,
         restart,
         getCurrentPlayer,
-        manageEndgame
+        manageEndgame,
+        getP1Score,
+        getP2Score
     }
 })();
 
@@ -285,6 +295,7 @@ const uiManager = (()=>{
         game.restart();
         resultDisplay.classList.remove('active');
         resetBoardDisplay();
+        updateScoreDisplay();
     })
     
     
@@ -312,6 +323,12 @@ const uiManager = (()=>{
             player1,
             player2
         }
+    }
+
+    let updateScoreDisplay = ()=>{
+        p1Score.textContent = game.getP1Score();
+        p2Score.textContent = game.getP2Score();
+
     }
 
     let toggleModal = ()=>{
