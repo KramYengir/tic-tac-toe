@@ -13,7 +13,7 @@
    --background-img: url(img/board2.png);
    --board-size: min(60vw, 600px);
    --cell-size: calc(var(--board-size)/3);
-   --cell-border: 1px solid green;
+   --cell-border: none;
 
    --x-image: url(img/white-x.png);
    --o-image: url(img/white-o.png);
@@ -144,8 +144,7 @@ body{
    grid-template-columns: repeat(3, 1fr);
    grid-template-rows: repeat(3, 1fr);
 
-   width: var(--board-size);/* 
-   height: var(--board-size); */
+   width: var(--board-size);
    background-image: var(--background-img);
    background-size: cover;
    background-position: center;
@@ -157,12 +156,21 @@ body{
     cursor: pointer;
  }
 
+ .board.X  .cell:not(.X):not(.O):hover{
+   background-image: var(--x-image);
+   opacity: 0.3;
+ }
+
+ .board.O .cell:not(.X):not(.O):hover{
+   background-image: var(--o-image);
+   opacity: 0.3;
+ }
+
  .cell.X, .cell.O{
     background-size: var(--img-size) var(--img-size);
     background-repeat: no-repeat;
     background-position: center;
     cursor: not-allowed;
-    /* filter: invert(90%);  */
  }
 
  .cell.X{
@@ -193,13 +201,11 @@ body{
 
 .side-panel{
    aspect-ratio: 9/6;
+   flex: 0.4;
    width: var(--score-display-size);
    display: flex;
-   flex: 0.4;
    flex-direction: column;
    align-items: center;
-   justify-content: space-between;
-   border: 1px solid red;
 }
 
  .score-display{
@@ -231,10 +237,6 @@ body{
    justify-self: center;
    padding-top: 1rem;
    margin-bottom: 5rem;
-}
-
-.p1-name{
-   /* border-right: 5px solid white; */
 }
 
 #restart-button{

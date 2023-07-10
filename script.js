@@ -140,6 +140,7 @@ const game = (()=>{
 
     let changePlayer = ()=>{
         currentPlayer === player1 ? currentPlayer = player2 : currentPlayer = player1;
+        uiManager.setBoardTurn();
     } 
 
     let makeMove = (index) =>{
@@ -170,6 +171,7 @@ const game = (()=>{
         moveCount = 0;
         newGameboard.resetBoard();
         currentPlayer = player1;
+        uiManager.setBoardTurn();
     }
 
     return {
@@ -270,9 +272,7 @@ const uiManager = (()=>{
     const p1Score = document.querySelector('.p1-score');
     const p2Score = document.querySelector('.p2-score');
 
-
-
-
+    const board = document.querySelector('.board');
     const cells = [...document.getElementsByClassName('cell')];
     const resultDisplay = document.querySelector('.result-display');
     const resultMessage = document.querySelector('.message');
@@ -288,6 +288,7 @@ const uiManager = (()=>{
     readyButton.addEventListener('click', ()=>{
         setPlayerNames();
         toggleModal();
+        setBoardTurn();
 
     })
     
@@ -335,6 +336,18 @@ const uiManager = (()=>{
         modal.classList.toggle('hide');
     }
 
+    let setBoardTurn = ()=>{
+        if(game.getCurrentPlayer().sign === 'X'){
+            board.classList.add('X');
+            board.classList.remove('O');
+
+        }
+        else{
+            board.classList.add('O');
+            board.classList.remove('X');
+        }
+    }
+
 /*     let resetPlayerInputs = ()=>{
         player1Input.value = 'Player 1';
         player2Input.value = 'Player 2';
@@ -364,6 +377,7 @@ const uiManager = (()=>{
 
     return {
         displayResult,
-        getPlayerNames
+        getPlayerNames,
+        setBoardTurn
     }
 })();
