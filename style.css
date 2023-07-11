@@ -118,7 +118,6 @@ body{
 
 #computer:checked{
   transform: scale(2);
-  color: bisque;
 }
 
  #ready-button{
