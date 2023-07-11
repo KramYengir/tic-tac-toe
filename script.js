@@ -265,6 +265,7 @@ const uiManager = (()=>{
     const modal = document.querySelector('.modal');
     const player1Input = document.querySelector('#player1-input');
     const player2Input = document.querySelector('#player2-input');
+    const computerCheckbox = document.querySelector('#computer');
     const readyButton = document.querySelector('#ready-button')
 
     const p1ScoreName = document.querySelector('.p1-name');
@@ -280,6 +281,11 @@ const uiManager = (()=>{
     const nextButton = document.querySelector('#next-button');
 
     let player1, player2;
+    let playComputer = false;
+
+    computerCheckbox.addEventListener('click', ()=>{
+        setComputerStatus();
+    })
 
     restartButton.addEventListener('click', ()=>{
         location.reload();
@@ -305,6 +311,21 @@ const uiManager = (()=>{
             handleClick(cell, index);
         })
     })
+
+    let setComputerStatus = ()=>{
+        if(computerCheckbox.checked){
+            player2Input.disabled = true;
+            playComputer = true;
+        }
+        else {
+            player2Input.disabled = false;
+            playComputer = true;
+        }
+    }
+
+    let getComputerStatus = ()=>{
+        return playComputer;
+    }
     
     let setPlayerNames = ()=>{
         let playerNames = helpers.getNamesFromInput(player1Input, player2Input);
@@ -378,6 +399,7 @@ const uiManager = (()=>{
     return {
         displayResult,
         getPlayerNames,
-        setBoardTurn
+        setBoardTurn,
+        getComputerStatus
     }
 })();
