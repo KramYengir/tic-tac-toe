@@ -11,7 +11,7 @@
 :root{
    /* BOARD */
    --background-img: url(img/board2.png);
-   --board-size: min(60vw, 600px);
+   --board-size: min(45vh, 450px);
    --cell-size: calc(var(--board-size)/3);
    --cell-border: none;
 
@@ -132,9 +132,10 @@ body{
    justify-content: center;
    align-items: center;
    gap: min(15%, 5rem);
-   margin-top: auto;
+   margin-top: min(20%, 15vh);
    padding-right: 1rem;
    padding-left: 1rem;
+   margin-bottom: 4rem;
  }
 
 .board{
@@ -149,21 +150,29 @@ body{
    background-size: cover;
    background-position: center;
 }
- .cell{
-   aspect-ratio: 1/1;
-    size: var(--cell-size);
-    border: var(--cell-border);
-    cursor: pointer;
- }
 
- .board.X  .cell:not(.X):not(.O):hover{
+.cell{
+aspect-ratio: 1/1;
+   size: var(--cell-size);
+   border: var(--cell-border);
+   cursor: pointer;
+}
+
+.board.X  .cell:not(.X):not(.O):hover{
    background-image: var(--x-image);
-   opacity: 0.3;
- }
+}
 
- .board.O .cell:not(.X):not(.O):hover{
+.board.O .cell:not(.X):not(.O):hover{
    background-image: var(--o-image);
+}
+
+.board.X  .cell:not(.X):not(.O):hover,
+.board.O .cell:not(.X):not(.O):hover{
+   background-repeat: no-repeat;
+   background-position: center;
+   background-size: var(--img-size) var(--img-size);
    opacity: 0.3;
+      
  }
 
  .cell.X, .cell.O{
@@ -282,8 +291,8 @@ body{
  }
 
  #next-button{
-    width: min(10ch, 100rem);
-    height: 80px;
+    width: min(65vw, 20rem);
+    min-height: 90px;
     border-radius: 10px;
     color: white;
     background-color: black;
