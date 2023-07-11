@@ -35,6 +35,10 @@
 
 }
 
+button{
+   cursor: pointer;
+}
+
 body{
     position: relative;
     width: 100vw;
@@ -101,6 +105,21 @@ body{
  #vs-span{
    font-size: clamp(0.5rem, 1.5rem, 3rem);
  }
+
+ #computer{
+   transform: scale(1.5);
+   margin-right: 0.5rem;
+ }
+
+ #computer:hover{
+   transform: scale(1.8);
+   cursor: pointer;
+ }
+
+#computer:checked{
+  transform: scale(2);
+  color: bisque;
+}
 
  #ready-button{
    width: var(--ready-btn-width);
