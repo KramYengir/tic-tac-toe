@@ -42,6 +42,18 @@ const gameBoard = (()=>{
         return board[index] == '';
     }
 
+    let getFreeCells = ()=>{
+        let freeCells = [];
+
+        board.forEach((el, index)=>{
+            if(el === ''){
+                freeCells.push(index);
+            }
+        })
+
+        return freeCells;
+    }
+
     let getBoard = ()=>{
         return board;
     }
@@ -51,7 +63,8 @@ const gameBoard = (()=>{
         markBoard,
         getPlayerSpaces,
         resetBoard,
-        getBoard
+        getBoard,
+        getFreeCells
     }
 })();
 
@@ -80,6 +93,8 @@ const game = (()=>{
     let moveCount = 0;
     let player1, player2;
     let currentPlayer;
+
+    let isGameover = false;
 
     let initPlayers = (p1, p2)=>{
         player1 = createPlayer(p1, 'X');
@@ -148,19 +163,36 @@ const game = (()=>{
             moveCount++;
             checkForResult();
             changePlayer();
+            console.log(moveCount);
+
+            //if playing vs computer, manage computer turn
+            if(currentPlayer.name === 'Computer' && !isGameover){
+                makeComputerMove();
+            }
         }
 
     }
 
+    let makeComputerMove = ()=>{
+        let freeCells = gameBoard.getFreeCells();
+        let randomIndex = helpers.getRandomIndex(freeCells.length);
+
+        uiManager.markCell(freeCells[randomIndex], currentPlayer.sign)
+        makeMove(freeCells[randomIndex]);
+    }
+
     let checkForResult = ()=>{
+
         if(checkForWin()){
             console.log('gameover')
             currentPlayer.increaseScore();
             manageEndgame(currentPlayer.name + ' Wins!');
+            isGameover =true;
         }
-        else if(moveCount>=9)
+        else if(moveCount>=9){
             manageEndgame("It's a tie!")
-        
+            isGameover = true;
+        }
     }
 
     let manageEndgame = (msg)=>{
@@ -172,6 +204,7 @@ const game = (()=>{
         newGameboard.resetBoard();
         currentPlayer = player1;
         uiManager.setBoardTurn();
+        isGameover = false;
     }
 
     return {
@@ -186,54 +219,11 @@ const game = (()=>{
 })();
 
 const helpers = (()=>{
+
+    let getRandomIndex = (max)=> {
+        return Math.floor(Math.random() * max);
+      }
     
-    /* const compareArrays = (a, b)=> {
-        // check the length
-        if (b.length < 3) {
-            return false;
-        } else {
-            let result = false;
-    
-            // comparing each element of array 
-            for (let i = 0; i < a.length; i++) {
-    
-                if (a[i] !== b[i]) {
-                    return false;
-                } else {
-                    result = true;
-                }
-            }
-            //if we make more than 3 moves, 
-            //our player's array will 
-            //be too long to compare. So here we will compare
-            //with the last 3 & first 3 values
-            if(b.length == 4){
-                //compare the first 3...
-                for (let i = 0; i < a.length; i++) {
-    
-                    if (a[i] !== b[i+1]) {
-                        return false;
-                    } else {
-                        result = true;
-                    }
-                }
-                if(result) return;
-                else{
-                    //compare the last 3...
-                    for (let i = 0; i < a.length; i++) {
-        
-                        if (a[i] !== b[i+2]) {
-                            return false;
-                        } else {
-                            result = true;
-                        }
-                    }
-                }
-            }
-            return result;
-        }
-    }
- */
     const getNamesFromInput = (input1, input2)=>{
         let player1, player2;
         
@@ -255,7 +245,7 @@ const helpers = (()=>{
 
 
     return{
-        /* compareArrays, */
+        getRandomIndex,
         getNamesFromInput
     }
 })();
@@ -319,7 +309,7 @@ const uiManager = (()=>{
         }
         else {
             player2Input.disabled = false;
-            playComputer = true;
+            playComputer = false;
         }
     }
 
@@ -331,10 +321,11 @@ const uiManager = (()=>{
         let playerNames = helpers.getNamesFromInput(player1Input, player2Input);
         
         player1 = playerNames.player1;
-        player2 = playerNames.player2;
 
-        p1ScoreName.textContent = playerNames.player1;
-        p2ScoreName.textContent = playerNames.player2;
+        player2 = playComputer ? 'Computer' : playerNames.player2;
+
+        p1ScoreName.textContent = player1;
+        p2ScoreName.textContent = player2;
 
 
         game.initPlayers(player1, player2);
@@ -369,18 +360,16 @@ const uiManager = (()=>{
         }
     }
 
-/*     let resetPlayerInputs = ()=>{
-        player1Input.value = 'Player 1';
-        player2Input.value = 'Player 2';
-
-    } */
-
     let handleClick = (cell, index)=>{
         if(cell.classList.contains('X') || cell.classList.contains('O'))
             return;
 
-        cell.classList.add(game.getCurrentPlayer().sign);
+        markCell(index, game.getCurrentPlayer().sign);
         game.makeMove(index);
+    }
+
+    let markCell = (index, sign)=>{
+        cells[index].classList.add(sign);
     }
 
     let displayResult = (msg)=>{
@@ -400,6 +389,7 @@ const uiManager = (()=>{
         displayResult,
         getPlayerNames,
         setBoardTurn,
-        getComputerStatus
+        getComputerStatus,
+        markCell
     }
 })();
